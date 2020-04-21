@@ -1,32 +1,32 @@
 class ArticlesController < ApplicationController
+  #before we do any actions, call the set_article method, but only for the show, edit, update, and destroy methods
+  before_action :set_article, only: [:show, :edit, :update, :destroy]
 
   def show
-    #display a specific article by the id value
-    @article = Article.find(params[:id])
+    
   end
 
-  #Function to display all the articles
+  #Method to display all the articles
   def index
     #display all the articles
     @articles = Article.all
   end
 
-  #Function to create new articles
+  #Method to create new articles
   def new
     #create an instance variable to hold a new article item formed after out Article table
     @article = Article.new
   end
 
-  #Function to edit existing articles
+  #Method to edit existing articles
   def edit
-    #create an instance variable to hold the article we want to edit - pulling the id value from the url
-    @article = Article.find(params[:id])
+
   end
 
-  #Function to create a new article from input inside our form 
+  #Method to create a new article from input inside our form 
   def create
-    #need to whitelist the paramaters that we want to use from the form on the new.html.erb file
-    @article = Article.new(params.require(:article).permit(:title, :description))
+    #Call method to whitelist params for the article
+    @article = Article.new(article_params)
     #save the new article to the table
     if @article.save
       #if doing the above action was successful - returns true - then do the next items
@@ -41,12 +41,10 @@ class ArticlesController < ApplicationController
     end  
   end
 
-  #Function to update an existing article that we edited in a table
+  #Method to update an existing article that we edited in a table
   def update
-    #create an instance variable to hold the artible we want to edit - pulling the id value from the url
-    @article = Article.find(params[:id])
-    #need to whitelist the paramaters that we want to use from the form on the new.html.erb file
-    if @article.update(params.require(:article).permit(:title, :description))
+    #Call method to whitelist params for the article
+    if @article.update(article_params)
       #if doing the above action was successful - returns true - then do the next items
       #update the flash helper hash's 'notice'
       flash[:notice] = "Article was updated successfully."
@@ -58,6 +56,26 @@ class ArticlesController < ApplicationController
       render 'edit'
     end
 
+  end
+
+  def destroy
+    @article.destroy
+    redirect_to articles_path
+  end
+
+  #Makes anything below this line only available to this file
+  private
+
+  #Private Method that sets the article by finding the id of that article from the url paramater
+  def set_article
+    #set a specific article by the id value to the instance @article
+    @article = Article.find(params[:id])
+  end
+
+  #Private method that finds the parameters for our article
+  def article_params
+    #whitelists the title and description parameters of an article
+    params.require(:article).permit(:title, :description)
   end
 
 end
