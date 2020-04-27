@@ -28,7 +28,7 @@ class ArticlesController < ApplicationController
     #Call method to whitelist params for the article
     @article = Article.new(article_params)
     #Hard coding in a user_id to the new article
-    @article.user = User.first
+    @article.user = current_user
     #save the new article to the table
     if @article.save
       #if doing the above action was successful - returns true - then do the next items
