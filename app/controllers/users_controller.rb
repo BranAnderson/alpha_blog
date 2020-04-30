@@ -11,7 +11,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       session[:user_id] = @user.id
-      flash[:notice] = "Welcome to the Alpha Blog #{ @user.username }, you have successfully signed up!"
+      flash[:success] = "Welcome to the Alpha Blog #{ @user.username }, you have successfully signed up!"
       redirect_to @user
     else
       render 'new'
@@ -39,7 +39,7 @@ class UsersController < ApplicationController
 
   def update
     if @user.update(user_params)
-      flash[:notice] = "Your account information was successfully update"
+      flash[:success] = "Your account information was successfully update"
       redirect_to @user
     else
       render 'edit'
@@ -65,7 +65,7 @@ class UsersController < ApplicationController
 
   def require_admin
     if logged_in? && !current_user.admin?
-      flash[:danger] = "only admin users can perform that action"
+      flash[:danger] = "Only admin users can perform that action"
       redirect_to root_path
     end
   end
