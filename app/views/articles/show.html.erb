@@ -1,31 +1,57 @@
-<h2 class="text-center mt-4 mb-4" ><%= @article.title %></h2>
+<div class="container article-show bg-light border p-0">
 
-<div class="container">
-  <div class="row justify-content-md-center">
-    <div class="col-8 mb-4">
-      <div class="card text-center shadow mb-5 bg-white rounded">
+  <div class="article-header card-header mb-4">
+    <div class="row justify-content-center article-date">
+      <small class="text-muted"><%= @article.created_at.to_date %></small>
+    </div>
+    <div class="row justify-content-center article-title">
+      <h1><%= @article.title %></h1>
+    </div>
+    <% if @article.subtitle.present? %>
+      <div class="row justify-content-center article-subtitle">
+        <h4><%= @article.subtitle.downcase %></h4>
+      </div>
+    <% end %>
+  </div>
 
-        <div class="card-header font-italic">
-          <% if @article.user %>
-            By: <%= @article.user.username %>
-            <%= link_to gravatar_for(@article.user), user_path(@article.user) %>
-          <% end %>
-        </div>
-        <div class="card-body">
-          <div class="card-text text-left"><%= simple_format(@article.description) %></div>
-          <% if @article.categories.any? %>
-            <p class="text-muted"><small>Categories: <%= render @article.categories %></small></p>
-          <% end %>
-          <% if logged_in? && (@article.user == current_user || current_user.admin?) %>
-            <%= link_to "Edit", edit_article_path(@article), class: "btn btn-outline-primary" %>
-            <%= link_to "Delete", article_path(@article), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-outline-danger" %>
-          <% end %>
-        </div>
-        <div class="card-footer text-muted">
-          <small>Created <%= time_ago_in_words(@article.created_at) %> ago,
-          edited <%= time_ago_in_words(@article.updated_at) %> ago </small>
-        </div>
+  <div class="article-body mt-4 mb-4">
+    <div class="row p-4 justify-content-center article-content">
+      <div class="col-10">
+        <%= simple_format(@article.description) %>
       </div>
     </div>
   </div>
+
+  <div class="article-footer card-footer mt-4 text-muted">
+    <div class="row justify-content-center">
+      <div class="article-edited">
+        <small><em>Edited <%= time_ago_in_words(@article.updated_at) %> ago</em></small></br>
+        <% if current_user == @article.user %>
+          <div class="row justify-content-center">
+            <%= link_to 'Edit', edit_article_path(@article), class: 'btn btn-sm btn-outline-primary' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="row pt-2 pr-4 pb-4 pl-4">
+      <div class="user-image pl-2">
+        <% if @article.user %>
+          <%= link_to gravatar_for(@article.user), user_path(@article.user) %>
+        <% end %>
+      </div>
+      <div class="col-6">
+        <div class="article-author pt-0 pb-1">
+          <% if @article.user %>
+            <small><strong>Article by <%= link_to @article.user.username, user_path(@article.user) %></strong></small>
+          <% end %>
+        </div>
+        <% if @article.user.info.present? %>
+          <div class="author-about">
+            <small><%= @article.user.info %></small>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
 </div>

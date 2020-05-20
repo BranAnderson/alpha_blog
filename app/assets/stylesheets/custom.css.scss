@@ -57,6 +57,30 @@ body {
 
 /*
   ==============================================
+  Articles
+  ==============================================
+*/
+
+.article-show {
+  max-width: 1000px;
+}
+
+.article-title h1 {
+  font-weight: 400;
+  font-size: 48px;
+}
+
+.article-subtitle h4 {
+  font-variant: small-caps;
+  font-weight: 300;
+}
+
+.user-image {
+  margin: 0 0 0 0;
+}
+
+/*
+  ==============================================
   Footer
   ==============================================
 */

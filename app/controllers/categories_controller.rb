@@ -5,10 +5,12 @@ class CategoriesController < ApplicationController
   def index
     #display all the articles
     @categories = Category.paginate(page: params[:page], per_page: 5)
+    
   end
 
   def new
     @category = Category.new
+
   end
 
   def create
@@ -19,6 +21,7 @@ class CategoriesController < ApplicationController
     else
       render 'new'
     end
+
   end
 
   def edit
@@ -32,6 +35,7 @@ class CategoriesController < ApplicationController
     else
       render 'edit'
     end
+
   end
 
   def show
@@ -43,6 +47,7 @@ class CategoriesController < ApplicationController
   def set_category
     @category = Category.find(params[:id])
   end
+
   def category_params
     params.require(:category).permit(:name)
   end
@@ -52,6 +57,7 @@ class CategoriesController < ApplicationController
       flash[:danger] = "Only admins can perform that action"
       redirect_to categories_path
     end
+
   end
 
 end

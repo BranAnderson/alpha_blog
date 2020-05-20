@@ -35,7 +35,7 @@ class ArticlesController < ApplicationController
     if @article.save
       #if doing the above action was successful - returns true - then do the next items
       #set flash 'notice' to the following message
-      flash[:notice] = "Article was created sucessfully."
+      flash[:success] = "Article was created sucessfully."
       #redirect to the new article page
       redirect_to @article
     else
@@ -51,7 +51,7 @@ class ArticlesController < ApplicationController
     if @article.update(article_params)
       #if doing the above action was successful - returns true - then do the next items
       #update the flash helper hash's 'notice'
-      flash[:notice] = "Article was updated successfully."
+      flash[:success] = "Article was updated successfully."
       #redirect from the current update page to the articles page
       redirect_to @article
     else
@@ -64,7 +64,7 @@ class ArticlesController < ApplicationController
 
   def destroy
     @article.destroy
-    flash[:notice] = "Article was successfully deleted."
+    flash[:success] = "Article was successfully deleted."
     redirect_to articles_path
   end
 
@@ -80,7 +80,7 @@ class ArticlesController < ApplicationController
   #Private method that finds the parameters for our article
   def article_params
     #whitelists the title and description parameters of an article
-    params.require(:article).permit(:title, :description, category_ids: [])
+    params.require(:article).permit(:title, :subtitle, :description, category_ids: [])
   end
 
   def require_same_user
