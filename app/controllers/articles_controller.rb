@@ -27,6 +27,7 @@ class ArticlesController < ApplicationController
 
   #Method to create a new article from input inside our form 
   def create
+    byebug
     #Call method to whitelist params for the article
     @article = Article.new(article_params)
     #Hard coding in a user_id to the new article
@@ -80,7 +81,7 @@ class ArticlesController < ApplicationController
   #Private method that finds the parameters for our article
   def article_params
     #whitelists the title and description parameters of an article
-    params.require(:article).permit(:title, :subtitle, :description, category_ids: [])
+    params.require(:article).permit(:title, :subtitle, :description, category_ids: [], images: [])
   end
 
   def require_same_user
