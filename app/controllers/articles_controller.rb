@@ -27,7 +27,6 @@ class ArticlesController < ApplicationController
 
   #Method to create a new article from input inside our form 
   def create
-    byebug
     #Call method to whitelist params for the article
     @article = Article.new(article_params)
     #Hard coding in a user_id to the new article
