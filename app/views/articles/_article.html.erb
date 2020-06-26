@@ -1,39 +1,70 @@
 <div class="container">
   
   <% @articles.each do |article| %>
-    <div class="row justify-content-center">
-      <div class="col-8 mb-4">
-        <div class="card text-center shadow mb-5 bg-white rounded">
-
-          <div class="card-header font-italic">
-            <% if article.user %>
-              By: <%= link_to article.user.username, user_path(article.user) %>
-            <% end %>
-          </div>
-          <div class="row justify-content-center">
-            <div class="card-body col-10">
-              <h5 class="card-title mb-0"><%= link_to article.title, article_path(article), class: "text-success" %></h5>
-              <div class="card-text m-0 p-0"><%= simple_format(truncate(article.description.to_s, 
-                                                                  :length => 180, 
-                                                                  :separator => " ", 
-                                                                  :escape => false)) %></div>
-              <% if article.categories.any? %>
-                <p class="text-muted"><small>Categories: <%= render article.categories %></small></p>
+    <% if article.public || (!article.public && !article.private) || (article.private && current_user == article.user) %>
+      <div class="row justify-content-center">
+        <div class="col-8 mb-4">
+          <div class="card text-center shadow mb-5 bg-white rounded">
+            <div class="card-header font-italic">
+              <% if article.user %>
+                  By: <%= link_to article.user.username, user_path(article.user) %>
               <% end %>
-              <%= link_to "View", article_path(article), class: "btn btn-outline-success" %>
-              <% if logged_in? && (article.user == current_user || current_user.admin?) %>
-                <%= link_to "Edit", edit_article_path(article), class: "btn btn-outline-primary" %>
-                <%= link_to "Delete", article_path(article), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-outline-danger" %>
+              <% if article.private %>
+                <br><small>private article - viewable only by you</small>
+              <% end %>
+              <% if !article.public && !article.private%>
+                <br><small>member only article</small>
+              <% end %>
+              <% if article.public && logged_in?%>
+                <br><small>public article</small>
               <% end %>
             </div>
-          </div>
-          <div class="card-footer text-muted">
-            <small>Created <%= time_ago_in_words(article.created_at) %> ago,
-            edited <%= time_ago_in_words(article.updated_at) %> ago </small>
+            <div class="row justify-content-center">
+              <% if !article.public && !logged_in? %>
+                <div class="card-body col-10">
+                  <h5 class="card-title mb-0">
+                      <%= article.title%>
+                  </h5>
+                  <div class="card-text m-0 p-0">
+                    <%= link_to "Sign In to view article content", login_path %></div>
+                  <% if article.categories.any? %>
+                    <p class="text-muted"><small>Categories: <%= render article.categories %></small></p>
+                  <% end %>
+                  <%= link_to "View", article_path(article), class: "btn btn-outline-success" %>
+                  <% if logged_in? && (article.user == current_user || current_user.admin?) %>
+                    <%= link_to "Edit", edit_article_path(article), class: "btn btn-outline-primary" %>
+                    <%= link_to "Delete", article_path(article), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-outline-danger" %>
+                  <% end %>
+                </div>
+              <% else %>
+                <div class="card-body col-10">
+                  <h5 class="card-title mb-0">
+                      <%= link_to article.title, article_path(article), class: "text-success" %>
+                  </h5>
+                  <div class="card-text m-0 p-0">
+                    <%= simple_format(truncate(article.description.to_s, 
+                                                                      :length => 180, 
+                                                                      :separator => " ", 
+                                                                      :escape => false)) %></div>
+                  <% if article.categories.any? %>
+                    <p class="text-muted"><small>Categories: <%= render article.categories %></small></p>
+                  <% end %>
+                  <%= link_to "View", article_path(article), class: "btn btn-outline-success" %>
+                  <% if logged_in? && (article.user == current_user || current_user.admin?) %>
+                    <%= link_to "Edit", edit_article_path(article), class: "btn btn-outline-primary" %>
+                    <%= link_to "Delete", article_path(article), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-outline-danger" %>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+            <div class="card-footer text-muted">
+              <small>Created <%= time_ago_in_words(article.created_at) %> ago,
+              edited <%= time_ago_in_words(article.updated_at) %> ago </small>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    <% end %>
   <% end %>
 
 </div>

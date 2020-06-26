@@ -42,6 +42,18 @@
           <div class="col-2"></div>
 
           <div class="col-10">
+            <%= f.check_box :public, class: "checkbox mr-1" %>
+            <%= f.label :public, class: "checkbox-inline input_checkbox mr-1" %><small>(viewable without login)</small>
+            <%= f.check_box :private, class: "checkbox ml-2 mr-1" %>
+            <%= f.label :private, class: "checkbox-inline input_checkbox mr-1" %><small>(viewable only by you)</small>
+          </div>
+
+        </div>
+
+        <div class="form-group row">
+          <div class="col-2"></div>
+
+          <div class="col-10">
             <%= f.collection_check_boxes :category_ids, Category.all, :id, :name do |cb| %>
               <% cb.label(class: "checkbox-inline input_checkbox mr-4") {cb.check_box(class: "checkbox mr-2") + cb.text } %>
             <% end %>

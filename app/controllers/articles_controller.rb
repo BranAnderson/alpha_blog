@@ -80,8 +80,8 @@ class ArticlesController < ApplicationController
 
   #Private method that finds the parameters for our article
   def article_params
-    #whitelists the title and description parameters of an article
-    params.require(:article).permit(:title, :subtitle, :description, category_ids: [], images: [])
+    #whitelists the parameters of an article
+    params.require(:article).permit(:title, :subtitle, :description, :public, :private, category_ids: [])
   end
 
   def require_same_user
